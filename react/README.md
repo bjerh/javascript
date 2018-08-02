@@ -25,7 +25,6 @@ This style guide is mostly based on the standards that are currently prevalent i
 ## Basic Rules
 
   - Only include one React component per file.
-    - However, multiple [Stateless, or Pure, Components](https://facebook.github.io/react/docs/reusable-components.html#stateless-functions) are allowed per file. eslint: [`react/no-multi-comp`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/no-multi-comp.md#ignorestateless).
   - Always use JSX syntax.
   - Do not use `React.createElement` unless you're initializing the app from a file that is not JSX.
 
@@ -80,9 +79,9 @@ This style guide is mostly based on the standards that are currently prevalent i
 
 ## Naming
 
-  - **Extensions**: Use `.jsx` extension for React components.
+  - **Extensions**: Use `.js` extension for React components and everything else.
   - **Filename**: Use PascalCase for filenames. E.g., `ReservationCard.jsx`.
-  - **Reference Naming**: Use PascalCase for React components and camelCase for their instances. eslint: [`react/jsx-pascal-case`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-pascal-case.md)
+  - **Reference Naming**: Use PascalCase for React components and classes/modules and camelCase for their instances. eslint: [`react/jsx-pascal-case`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-pascal-case.md)
 
     ```jsx
     // bad
@@ -110,7 +109,9 @@ This style guide is mostly based on the standards that are currently prevalent i
     // good
     import Footer from './Footer';
     ```
-  - **Higher-order Component Naming**: Use a composite of the higher-order component's name and the passed-in component's name as the `displayName` on the generated component. For example, the higher-order component `withFoo()`, when passed a component `Bar` should produce a component with a `displayName` of `withFoo(Bar)`.
+  - **Higher-order Component Naming**:
+  Avoid creating high order components as much as possible.
+  Use a composite of the higher-order component's name and the passed-in component's name as the `displayName` on the generated component. For example, the higher-order component `withFoo()`, when passed a component `Bar` should produce a component with a `displayName` of `withFoo(Bar)`.
 
     > Why? A component's `displayName` may be used by developer tools or in error messages, and having a value that clearly expresses this relationship helps people understand what is happening.
 
@@ -281,21 +282,21 @@ This style guide is mostly based on the standards that are currently prevalent i
     />
     ```
 
-  - Omit the value of the prop when it is explicitly `true`. eslint: [`react/jsx-boolean-value`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-boolean-value.md)
+  - Do not omit the value of the prop when it is explicitly `true`.
 
     ```jsx
     // bad
     <Foo
-      hidden={true}
-    />
-
-    // good
-    <Foo
       hidden
     />
 
-    // good
+    // bad
     <Foo hidden />
+    
+    // good
+    <Foo
+      hidden={true}
+    />
     ```
 
   - Always include an `alt` prop on `<img>` tags. If the image is presentational, `alt` can be an empty string or the `<img>` must have `role="presentation"`. eslint: [`jsx-a11y/alt-text`](https://github.com/evcohen/eslint-plugin-jsx-a11y/blob/master/docs/rules/alt-text.md)
@@ -454,20 +455,7 @@ This style guide is mostly based on the standards that are currently prevalent i
   ```
 
 ## Refs
-
-  - Always use ref callbacks. eslint: [`react/no-string-refs`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/no-string-refs.md)
-
-    ```jsx
-    // bad
-    <Foo
-      ref="myRef"
-    />
-
-    // good
-    <Foo
-      ref={(ref) => { this.myRef = ref; }}
-    />
-    ```
+Use recommended way to do refs. [`React DOCS`](https://reactjs.org/docs/refs-and-the-dom.html)
 
 ## Parentheses
 
@@ -620,6 +608,7 @@ This style guide is mostly based on the standards that are currently prevalent i
 
   1. optional `static` methods
   1. `constructor`
+  1. `getInitialProps`
   1. `getChildContext`
   1. `componentWillMount`
   1. `componentDidMount`
@@ -665,30 +654,6 @@ This style guide is mostly based on the standards that are currently prevalent i
     export default Link;
     ```
 
-  - Ordering for `React.createClass`: eslint: [`react/sort-comp`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/sort-comp.md)
-
-  1. `displayName`
-  1. `propTypes`
-  1. `contextTypes`
-  1. `childContextTypes`
-  1. `mixins`
-  1. `statics`
-  1. `defaultProps`
-  1. `getDefaultProps`
-  1. `getInitialState`
-  1. `getChildContext`
-  1. `componentWillMount`
-  1. `componentDidMount`
-  1. `componentWillReceiveProps`
-  1. `shouldComponentUpdate`
-  1. `componentWillUpdate`
-  1. `componentDidUpdate`
-  1. `componentWillUnmount`
-  1. *clickHandlers or eventHandlers* like `onClickSubmit()` or `onChangeDescription()`
-  1. *getter methods for `render`* like `getSelectReason()` or `getFooterContent()`
-  1. *optional render methods* like `renderNavigation()` or `renderProfilePicture()`
-  1. `render`
-
 ## `isMounted`
 
   - Do not use `isMounted`. eslint: [`react/no-is-mounted`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/no-is-mounted.md)
@@ -696,22 +661,3 @@ This style guide is mostly based on the standards that are currently prevalent i
   > Why? [`isMounted` is an anti-pattern][anti-pattern], is not available when using ES6 classes, and is on its way to being officially deprecated.
 
   [anti-pattern]: https://facebook.github.io/react/blog/2015/12/16/ismounted-antipattern.html
-
-## Translation
-
-  This JSX/React style guide is also available in other languages:
-
-  - ![cn](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/China.png) **Chinese (Simplified)**: [JasonBoy/javascript](https://github.com/JasonBoy/javascript/tree/master/react)
-  - ![tw](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/Taiwan.png) **Chinese (Traditional)**: [jigsawye/javascript](https://github.com/jigsawye/javascript/tree/master/react)
-  - ![es](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/Spain.png) **Español**: [agrcrobles/javascript](https://github.com/agrcrobles/javascript/tree/master/react)
-  - ![jp](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/Japan.png) **Japanese**: [mitsuruog/javascript-style-guide](https://github.com/mitsuruog/javascript-style-guide/tree/master/react)
-  - ![kr](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/South-Korea.png) **Korean**: [apple77y/javascript](https://github.com/apple77y/javascript/tree/master/react)
-  - ![pl](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/Poland.png) **Polish**: [pietraszekl/javascript](https://github.com/pietraszekl/javascript/tree/master/react)
-  - ![Br](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/Brazil.png) **Portuguese**: [ronal2do/javascript](https://github.com/ronal2do/airbnb-react-styleguide)
-  - ![ru](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/Russia.png) **Russian**: [leonidlebedev/javascript-airbnb](https://github.com/leonidlebedev/javascript-airbnb/tree/master/react)
-  - ![th](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/Thailand.png) **Thai**: [lvarayut/javascript-style-guide](https://github.com/lvarayut/javascript-style-guide/tree/master/react)
-  - ![tr](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/Turkey.png) **Turkish**: [alioguzhan/react-style-guide](https://github.com/alioguzhan/react-style-guide)
-  - ![ua](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/Ukraine.png) **Ukrainian**: [ivanzusko/javascript](https://github.com/ivanzusko/javascript/tree/master/react)
-  - ![vn](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/Vietnam.png) **Vietnam**: [uetcodecamp/jsx-style-guide](https://github.com/UETCodeCamp/jsx-style-guide)
-
-**[⬆ back to top](#table-of-contents)**
